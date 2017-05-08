@@ -1,6 +1,6 @@
 # PyJSBSim
 
-A python interface to JSBSim
+A python interface to JSBSim. This fork of the original project fixes it so that I can run it with the version of JSBSim I have installed. 
 
 ## Installation
 
