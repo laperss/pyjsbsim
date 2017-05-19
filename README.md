@@ -1,14 +1,15 @@
 # PyJSBSim
 
-A python interface to JSBSim
+A Python interface to JSBSim.
 
-## Installation
+## Installation:
+If your installation of JSBSim does not use the c++-11 standard, then install using:
+```bash
+sudo CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install
+```
 
-You need to install the following dependencies:
+## Dependencies
 
 * Cython
 * NumPy
 
-## Example Usage
-
-See examples/plot.py for a basic usage example.
