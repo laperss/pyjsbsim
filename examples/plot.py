@@ -3,7 +3,7 @@ from pyjsbsim import FGFDMExec
 from pylab import *
 
 # load
-fdm = FGFDMExec(debug_level=0)
+fdm = FGFDMExec()
 fdm.load_model("f16")
 
 # trim
