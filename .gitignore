@@ -1,5 +1,6 @@
 build/*
 *.pyc
+*.py#
 *.so
 *.dll
 *.egg-info/
@@ -7,3 +8,7 @@ build/*
 *.log
 *.swp
 save*
+*.la
+*.so.0
+*.so.0.0.0
+
