@@ -26,13 +26,13 @@ else:
             raise IOError("Must install Cython >= 0.18 to build from git")
 
 ext_modules += [ Extension('pyjsbsim.jsbsim_cython',
-    sources= pyjsbsim_srcs,
-    libraries=['JSBSim'],
-    include_dirs=[
-        '/usr/local/include/JSBSim'
-    ],
-    language='c++'),
-]
+                    sources= pyjsbsim_srcs,
+                    libraries=['JSBSim'],
+                    library_dirs=['/usr/local/lib'],
+                    include_dirs=['/usr/local/include/JSBSim'],
+                    extra_compile_args = ['-D_GLIBCXX_USE_CXX11_ABI=0'],
+                    language='c++'),
+                ]
 
 setup(name='PyJSBSim',
       version=version,
