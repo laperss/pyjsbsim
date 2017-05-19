@@ -1,6 +1,7 @@
 from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from string import rfind
 
 import os, platform
 
@@ -40,7 +41,8 @@ cdef extern from "JSBSim/FGFDMExec.h" namespace "JSBSim":
         #void ForceOutput(int idx=0)
         void SetLoggingRate(double rate)
         bool SetOutputFileName(string fname)
-        string GetOutputFileName()
+        #string GetOutputFileName()
+        string GetOutputFileName(int n)
         void DoTrim(int mode) except +
         void DoSimplexTrim(int mode) except +
         void DoLinearization(int mode)
@@ -51,7 +53,8 @@ cdef extern from "JSBSim/FGFDMExec.h" namespace "JSBSim":
         void CheckIncrementalHold()
         void Resume()
         bool Holding()
-        void ResetToInitialConditions()
+        #void ResetToInitialConditions()
+        void ResetToInitialConditions(int n)
         void SetDebugLevel(int level)
         string QueryPropertyCatalog(string check)
         void PrintPropertyCatalog()
@@ -109,6 +112,7 @@ cdef class FGFDMExec:
         search_paths.append(os.environ.get("JSBSIM"))
         if platform.system() == "Linux":
             search_paths.append("/usr/local/share/JSBSim/")
+            search_paths.append("/usr/local/include/JSBSim/")
             search_paths.append("/usr/share/JSBSim/")
         elif platform.system() == "Windows":
             #TODO add some windows search paths
@@ -339,7 +343,7 @@ cdef class FGFDMExec:
         @return the name of the output file for the first output specified by the flight model.
             If none is specified, the empty string is returned.
         """
-        return self.thisptr.GetOutputFileName()
+        return self.thisptr.GetOutputFileName(0)
 
     def do_trim(self, mode):
         """
@@ -422,7 +426,7 @@ cdef class FGFDMExec:
         """
         Resets the initial conditions object and prepares the simulation to run again.
         """
-        self.thisptr.ResetToInitialConditions()
+        self.thisptr.ResetToInitialConditions(0)
 
     def set_debug_level(self, level):
         """
@@ -447,7 +451,11 @@ cdef class FGFDMExec:
         """
         catalog = {}
         for item in self.query_property_catalog(check):
-            catalog[item] = self.get_property_value(item)
+            if(item.count(' ') == 0):
+                catalog[item] = self.get_property_value(item)
+            else:
+                name = item[0:rfind(item," ")]
+                catalog[name] = self.get_property_value(name)                
         return catalog
 
     def print_property_catalog(self):
